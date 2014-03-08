@@ -33,12 +33,16 @@
         <tr>
             <td>Class</td>
             <td>Date</td>
+            <td>Registered participants</td>
+            <td>Capacity</td>
             <td>Actions</td>
         </tr>
         {% for c in classes %}
         <tr>
             <td>{{ c.type }}</td>
             <td>{{ c.date }}</td>
+            <td>{{ c.get_num_registered() }}</td>
+            <td>{{ c.capacity }}</td>
             {% if username %}
             <td><a href="/blog/signup?class_id={{c.id}}"> Sign up</a></td>
             {% else %}

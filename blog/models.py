@@ -31,6 +31,9 @@ class ArcheryClass(models.Model):
     type = models.ForeignKey(ArcheryClassType)
     capacity = models.IntegerField(default=50)
 
+    def get_num_registered(self):
+        return 0
+
     def __unicode__(self):
         return "%s @ %s" % (self.type, self.date.date())
 
