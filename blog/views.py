@@ -23,9 +23,19 @@ def logout_page(request):
     logout(request)
     return HttpResponseRedirect("/")
 
+def is_user_signed_up_for_class(some_user, some_class):
+    return len(ClassRegistration.objects.filter(archery_class=some_class, user=some_user)) > 0
+
+
 def classes(request):
     classes = ArcheryClass.objects.order_by('date')
-    return renderWithHeader(request, 'blog/classes.html', {'classes' : classes })
+    enrolled_classes_for_user = []
+    if request.user:
+        for c in classes:
+            if is_user_signed_up_for_class(request.user, c):
+                enrolled_classes_for_user.append(c)
+    return renderWithHeader(request, 'blog/classes.html', {'classes' : classes,
+                                                           'enrolled_classes': enrolled_classes_for_user})
 
 def thanks(request):
     return renderWithHeader(request, 'blog/thanks.html', {})
@@ -49,7 +59,7 @@ def register(request):
         return renderWithHeader(request, 'blog/register.html', { 'form': form, 'userexists': False })
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
+    username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
 
 
@@ -57,9 +67,9 @@ def login_page(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data["email"]
+            username = form.cleaned_data["username"]
             pwd = form.cleaned_data["password"]
-            user = authenticate(username=email, password=pwd)
+            user = authenticate(username=username, password=pwd)
             if user is not None:
                 if user.is_active:
                     login(request, user)
