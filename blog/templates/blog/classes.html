@@ -1,28 +1,6 @@
-{% load staticfiles %}
-<html>
-<head>
-    <title>Pasadena Roving Archers&raquo;</title>
-</head>
-<body>
-<div id="topimg"><img src="{% static "blog/images/pra-banner.jpg" %}"/></div>
-<div>
-    {% if header_list %}
-    <table>
-        <tr>
-            {% for header_item in header_list %}
-            <td><a href="{{ header_item.link }}">{{ header_item.name }}</a></td>
-            {% endfor %}
+{% extends "blog/base.html" %}
 
-            {% if username %}
-            <td><a href="/blog/logout">Logout</a>[{{ username }}]</td>
-            {% else %}
-            <td><a href="/blog/login">Login</a>[Anonymous user]</td>
-            {% endif %}
-        </tr>
-    </table>
-    {% endif %}
-</div>
-
+{% block content %}
 <div>
     {% if not username %}
     <h3>You must be logged in to sign up for any upcoming classes</h3>
@@ -41,7 +19,7 @@
         <tr>
             <td>{{ c.type }}</td>
             <td>{{ c.date }}</td>
-            <td>{{ c.get_num_registered() }}</td>
+            <td>{{ c.num_registered }}</td>
             <td>{{ c.capacity }}</td>
             {% if username %}
             <td><a href="/blog/signup?class_id={{c.id}}"> Sign up</a></td>
@@ -55,4 +33,4 @@
     <p>No classes</p>
     {% endif %}
 </div>
-</body>
+{% endblock %}

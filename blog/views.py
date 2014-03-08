@@ -28,7 +28,7 @@ def classes(request):
     return renderWithHeader(request, 'blog/classes.html', {'classes' : classes })
 
 def thanks(request):
-    return renderWithHeader(request, 'blog/thanks.html')
+    return renderWithHeader(request, 'blog/thanks.html', {})
 
 def user_exists(request):
     form = RegisterForm()
