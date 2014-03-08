@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<html>
+<head>
+  <title>Pasadena Roving Archers&raquo;</title>
+</head>
+<body>
+<div id="topimg"><img src="{% static "blog/images/pra-banner.jpg" %}"/></div>
+<div>
+    {% if header_list %}
+    <table><tr>
+        {% for header_item in header_list %}
+        <td><a href="{{ header_item.link }}">{{ header_item.name }}</a></td>
+        {% endfor %}
+    </tr></table>
+    {% endif %}
+</div>
+{% if userexists %}
+<p>I'm sorry, that email is already registered in our database.</p>
+{% endif %}
+<form action="/blog/register/" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+</body>
