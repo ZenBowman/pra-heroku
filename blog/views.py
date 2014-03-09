@@ -12,7 +12,7 @@ from emailer import send_qr_msg
 import qrcode
 
 def renderWithHeader(request, template, dict):
-    if request.user:
+    if request.user.is_authenticated():
         dict["username"] = request.user.username
     header_list = HeaderElement.objects.order_by('order')
     dict["header_list"] = header_list
@@ -33,7 +33,7 @@ def classes(request):
     show_full_msg = request.GET.get("full") == "true"
     classes = ArcheryClass.objects.order_by('date')
     enrolled_classes_for_user = []
-    if request.user:
+    if request.user.is_authenticated():
         for c in classes:
             if is_user_signed_up_for_class(request.user, c):
                 enrolled_classes_for_user.append(c)
