@@ -52,3 +52,6 @@ class BoardMember(models.Model):
     title = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     email = models.EmailField()
+
+    def __unicode__(self):
+        return "%s - %s" % (self.name, self.title)
