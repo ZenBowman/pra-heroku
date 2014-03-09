@@ -4,9 +4,17 @@
 <div>
     {% if not username %}
     <h3>You must be logged in to sign up for any upcoming classes</h3>
+    {% else %}
+    <p>
+        Classes you are currently enrolled for show up in bold.
+        In order to attend a class you have successfully enrolled for, you must appear at the range
+        with your personalized QR code. In order to resend your QR code to your email address, please
+        <a href="/blog/sendqr">click here</a>.</p>
+        <p>Keep in mind that many email clients will send this
+        email to your spam folder, so please add classregistration@rovingarchers.com to your contact
+        list to prevent it being classified as spam.
+    </p>
     {% endif %}
-
-    <p>Classes you are currently enrolled for show up in bold</p>
 
     {% if show_full_msg %}
     <p>Sorry, that class is full</p>
@@ -23,8 +31,10 @@
         </tr>
         {% for c in classes %}
         <tr>
-            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.type }}{% if c in enrolled_classes %}</b>{% endif %}</td>
-            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.date }}{% if c in enrolled_classes %}</b>{% endif %}</td>
+            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.type }}{% if c in enrolled_classes %}</b>{% endif %}
+            </td>
+            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.date }}{% if c in enrolled_classes %}</b>{% endif %}
+            </td>
 
             <td>{{ c.num_registered }}</td>
             <td>{{ c.capacity }}</td>

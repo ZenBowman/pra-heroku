@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django import forms
+from emailer import send_qr_msg
+
+import qrcode
 
 def renderWithHeader(request, template, dict):
     if request.user:
@@ -101,3 +104,11 @@ def signup(request):
 
 def about(request):
     return renderWithHeader(request, 'blog/about.html', {})
+
+@login_required
+def request_qr(request):
+    user = request.user
+    img = qrcode.make('%s/blog/check_user_classes?id=%s' % (request.get_host(), user.id))
+    img.save("foo.bmp", "BMP")
+    send_qr_msg(user.email, file("foo.bmp").read())
+    return HttpResponseRedirect("/blog/classes")
