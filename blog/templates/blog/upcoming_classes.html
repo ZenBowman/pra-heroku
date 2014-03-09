@@ -1,0 +1,8 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+        <p>{{ today }}</p>
+        {% for aclass in upcoming_classes %}
+        <p>{{ aclass }}</p>
+        {% endfor %}
+{% endblock %}

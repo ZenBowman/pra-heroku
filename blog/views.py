@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django import forms
-from emailer import send_qr_msg
+from datetime import date
 
 import qrcode
 
@@ -112,3 +112,16 @@ def request_qr(request):
     response = HttpResponse(mimetype="image/bmp")
     img.save(response, "BMP")
     return response
+
+@login_required
+def check_user_classes(request):
+    user = request.user
+    classes_for_user = ClassRegistration.objects.filter(user=user)
+    upcoming_classes = []
+    for c in classes_for_user:
+        if c.archery_class.date.date() >= date.today():
+            upcoming_classes.append(c)
+    return renderWithHeader(request, 'blog/upcoming_classes.html', {
+        'upcoming_classes':upcoming_classes,
+        'today':date.today()
+    })
