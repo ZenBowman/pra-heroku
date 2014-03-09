@@ -6,6 +6,12 @@
     <h3>You must be logged in to sign up for any upcoming classes</h3>
     {% endif %}
 
+    <p>Classes you are currently enrolled for show up in bold</p>
+
+    {% if show_full_msg %}
+    <p>Sorry, that class is full</p>
+    {% endif %}
+
     {% if classes %}
     <table border="1">
         <tr>
@@ -17,12 +23,17 @@
         </tr>
         {% for c in classes %}
         <tr>
-            <td>{{ c.type }}</td>
-            <td>{{ c.date }}</td>
+            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.type }}{% if c in enrolled_classes %}</b>{% endif %}</td>
+            <td>{% if c in enrolled_classes %}<b>{% endif %}{{ c.date }}{% if c in enrolled_classes %}</b>{% endif %}</td>
+
             <td>{{ c.num_registered }}</td>
             <td>{{ c.capacity }}</td>
             {% if username %}
+            {% if c in enrolled_classes %}
+            <td><a href="/blog/deregister?class_id={{c.id}}">Unregister</a></td>
+            {% else %}
             <td><a href="/blog/signup?class_id={{c.id}}"> Sign up</a></td>
+            {% endif %}
             {% else %}
             <td>Please login in order to sign up</td>
             {% endif %}

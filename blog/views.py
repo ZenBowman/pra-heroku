@@ -26,16 +26,18 @@ def logout_page(request):
 def is_user_signed_up_for_class(some_user, some_class):
     return len(ClassRegistration.objects.filter(archery_class=some_class, user=some_user)) > 0
 
-
 def classes(request):
+    show_full_msg = request.GET.get("full") == "true"
     classes = ArcheryClass.objects.order_by('date')
     enrolled_classes_for_user = []
     if request.user:
         for c in classes:
             if is_user_signed_up_for_class(request.user, c):
                 enrolled_classes_for_user.append(c)
-    return renderWithHeader(request, 'blog/classes.html', {'classes' : classes,
-                                                           'enrolled_classes': enrolled_classes_for_user})
+    return renderWithHeader(request, 'blog/classes.html', {
+        'show_full_msg' : show_full_msg,
+        'classes' : classes,
+        'enrolled_classes': enrolled_classes_for_user})
 
 def thanks(request):
     return renderWithHeader(request, 'blog/thanks.html', {})
@@ -91,5 +93,11 @@ def signup(request):
     class_id = request.GET.get("class_id")
     class_by_id = ArcheryClass.objects.filter(id = class_id)[0]
     if request.user:
-        ClassRegistration.objects.create_class(class_by_id, request.user)
+        if (class_by_id.num_registered() < class_by_id.capacity):
+            ClassRegistration.objects.create_class(class_by_id, request.user)
+        else:
+            HttpResponseRedirect("/blog/classes?full=true")
     return HttpResponseRedirect("/blog/classes/")
+
+def about(request):
+    return renderWithHeader(request, 'blog/about.html', {})

@@ -10,13 +10,14 @@
         {% if header_list %}
         <table>
             <tr>
-                {% for header_item in header_list %}
-                <td><a href="{{ header_item.link }}">{{ header_item.name }}</a></td>
-                {% endfor %}
+                <td><a href="/">Home</a></td>
+                <td><a href="/blog/about">About PRA</a></td>
+                <td><a href="/blog/classes">Upcoming classes</a></td>
 
                 {% if username %}
                 <td><a href="/blog/logout">Logout</a>[{{ username }}]</td>
                 {% else %}
+                <td><a href="blog/register">Register</a></td>
                 <td><a href="/blog/login">Login</a>[Anonymous user]</td>
                 {% endif %}
             </tr>
