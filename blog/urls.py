@@ -4,6 +4,8 @@ from blog import views
 
 urlpatterns = patterns(
     '',
+    url(r'team/', views.team, name='team'),
+    url(r'deregister', views.deregister, name='deregister'),
     url(r'^check_user_classes/', views.check_user_classes, name='check_user_classes'),
     url(r'^sendqr/', views.request_qr, name='request_qr'),
     url(r'^about/', views.about, name='about'),

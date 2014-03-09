@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import BlogPost, HeaderElement, ArcheryClass, ClassRegistration
+from models import BlogPost, HeaderElement, ArcheryClass, ClassRegistration, BoardMember
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 from django import forms
 from datetime import date
 
@@ -124,4 +123,18 @@ def check_user_classes(request):
     return renderWithHeader(request, 'blog/upcoming_classes.html', {
         'upcoming_classes':upcoming_classes,
         'today':date.today()
+    })
+
+@login_required
+def deregister(request):
+    class_id = request.GET.get("class_id")
+    user = request.user
+    archery_class = ArcheryClass.objects.filter(id = class_id)[0]
+    ClassRegistration.objects.filter(archery_class=archery_class, user=user).delete()
+    return classes(request)
+
+def team(request):
+    board_members = BoardMember.objects.order_by('id')
+    return renderWithHeader(request, 'blog/team.html', {
+        'board_members': board_members
     })
