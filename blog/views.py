@@ -109,6 +109,6 @@ def about(request):
 def request_qr(request):
     user = request.user
     img = qrcode.make('%s/blog/check_user_classes?id=%s' % (request.get_host(), user.id))
-    img.save("foo.bmp", "BMP")
-    send_qr_msg(user.email, file("foo.bmp").read())
-    return HttpResponseRedirect("/blog/classes")
+    response = HttpResponse(mimetype="image/bmp")
+    img.save(response, "BMP")
+    return response
