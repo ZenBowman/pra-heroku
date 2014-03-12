@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+import markdown
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField('Blog content')
     pub_date = models.DateTimeField('Date published')
-    image = models.TextField('Image')
+    image = models.TextField('Image', null=True, blank=True)
+
+    def markdown(self):
+        return markdown.markdown(self.content)
 
     def __unicode__(self):
         return "%s:%s" % (self.pub_date, self.title)
