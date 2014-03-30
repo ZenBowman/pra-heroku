@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import BlogPost, HeaderElement, ArcheryClass, ClassRegistration, BoardMember
+from models import BlogPost, HeaderElement, ArcheryClass, ClassRegistration, BoardMember, ClassDescription
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -29,6 +29,10 @@ def is_user_signed_up_for_class(some_user, some_class):
     return len(ClassRegistration.objects.filter(archery_class=some_class, user=some_user)) > 0
 
 def classes(request):
+    classdescs = ClassDescription.objects.order_by('id')
+    return renderWithHeader(request, "blog/class_descriptions.html", {'classes': classdescs})
+
+def upcoming_classes(request):
     show_full_msg = request.GET.get("full") == "true"
     classes = ArcheryClass.objects.order_by('date')
     enrolled_classes_for_user = []
@@ -36,7 +40,7 @@ def classes(request):
         for c in classes:
             if is_user_signed_up_for_class(request.user, c):
                 enrolled_classes_for_user.append(c)
-    return renderWithHeader(request, 'blog/classes.html', {
+    return renderWithHeader(request, 'blog/upcoming_classes.html', {
         'show_full_msg' : show_full_msg,
         'classes' : classes,
         'enrolled_classes': enrolled_classes_for_user})

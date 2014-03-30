@@ -59,3 +59,10 @@ class BoardMember(models.Model):
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.title)
+
+class ClassDescription(models.Model):
+    class_title = models.CharField(max_length=256)
+    target_participants = models.TextField(max_length=2048)
+    time_desc = models.TextField(max_length=2048)
+    location = models.TextField(max_length=2048)
+    cost = models.CharField(max_length=256)

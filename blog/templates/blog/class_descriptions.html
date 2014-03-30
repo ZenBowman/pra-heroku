@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div>
+    <table>
+        <tr>
+            <td>Class</td>
+            <td>Participants</td>
+            <td>Time</td>
+            <td>Location</td>
+            <td>Cost</td>
+        </tr>
+        {% for c in classes %}
+        <tr>
+            <td>{{ c.class_title }}</td>
+            <td>{{ c.target_participants }}</td>
+            <td>{{ c.time_desc }}</td>
+            <td>{{ c.location }}</td>
+            <td>{{ c.cost }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
