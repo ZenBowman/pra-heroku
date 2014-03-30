@@ -66,3 +66,6 @@ class ClassDescription(models.Model):
     time_desc = models.TextField(max_length=2048)
     location = models.TextField(max_length=2048)
     cost = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.class_title

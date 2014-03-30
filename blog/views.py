@@ -40,7 +40,7 @@ def upcoming_classes(request):
         for c in classes:
             if is_user_signed_up_for_class(request.user, c):
                 enrolled_classes_for_user.append(c)
-    return renderWithHeader(request, 'blog/upcoming_classes.html', {
+    return renderWithHeader(request, 'blog/classes.html', {
         'show_full_msg' : show_full_msg,
         'classes' : classes,
         'enrolled_classes': enrolled_classes_for_user})
