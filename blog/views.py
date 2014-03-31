@@ -88,11 +88,10 @@ def login_page(request):
         return renderWithHeader(request, 'blog/login.html', { 'form': form })
 
 
-# Create your views here.
 def index(request):
     blog_list = BlogPost.objects.order_by('-pub_date')
     context = {'blog_list': blog_list}
-    return renderWithHeader(request, 'blog/index.html', context)
+    return renderWithHeader(request, 'blog/blog.html', context)
 
 @login_required
 def signup(request):
