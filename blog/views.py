@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import BlogPost, HeaderElement, ArcheryClass, ClassRegistration, BoardMember, ClassDescription
+from models import *
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -105,9 +105,6 @@ def signup(request):
             HttpResponseRedirect("/blog/classes?full=true")
     return HttpResponseRedirect("/blog/classes/")
 
-def about(request):
-    return renderWithHeader(request, 'blog/about.html', {})
-
 @login_required
 def request_qr(request):
     user = request.user
@@ -142,3 +139,15 @@ def team(request):
     return renderWithHeader(request, 'blog/team.html', {
         'board_members': board_members
     })
+
+def render_content_page(request, name):
+    content = ContentPage.objects.filter(title=name)
+    return renderWithHeader(request, 'blog/markdown_content.html', {'content':content[0]})
+
+def about(request):
+    return render_content_page(request, "about")
+
+def contentpage(request):
+    targetpage = request.path.split("contentpage")[1].strip("/")
+    content = ContentPage.objects.filter(title=targetpage)
+    return renderWithHeader(request, 'blog/markdown_content.html', {'content':content[0]})

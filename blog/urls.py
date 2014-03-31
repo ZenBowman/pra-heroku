@@ -10,6 +10,7 @@ urlpatterns = patterns(
     url(r'^sendqr/', views.request_qr, name='request_qr'),
     url(r'^about/', views.about, name='about'),
     url(r'^signup/', views.signup, name='signup'),
+    url(r'^contentpage/', views.contentpage),
     url(r'^classes/upcoming', views.upcoming_classes, name='upcoming_classes'),
     url(r'^classes', views.classes, name='classes'),
     url(r'^logout/', views.logout_page, name='logout'),

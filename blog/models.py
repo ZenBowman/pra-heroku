@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import markdown
 
+
 class BlogPost(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField('Blog content')
@@ -30,27 +31,31 @@ class ArcheryClassType(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class ArcheryClass(models.Model):
     date = models.DateTimeField("Date of class")
     type = models.ForeignKey(ArcheryClassType)
     capacity = models.IntegerField(default=50)
 
     def num_registered(self):
-        return len(ClassRegistration.objects.filter(archery_class = self))
+        return len(ClassRegistration.objects.filter(archery_class=self))
 
     def __unicode__(self):
         return "%s @ %s" % (self.type, self.date.date())
+
 
 class ClassRegistrationManager(models.Manager):
     def create_class(self, archery_class, user):
         a_class = self.create(archery_class=archery_class, user=user)
         return a_class
 
+
 class ClassRegistration(models.Model):
     archery_class = models.ForeignKey(ArcheryClass)
     user = models.ForeignKey(User)
 
     objects = ClassRegistrationManager()
+
 
 class BoardMember(models.Model):
     title = models.CharField(max_length=100)
@@ -59,6 +64,7 @@ class BoardMember(models.Model):
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.title)
+
 
 class ClassDescription(models.Model):
     class_title = models.CharField(max_length=256)
@@ -69,3 +75,25 @@ class ClassDescription(models.Model):
 
     def __unicode__(self):
         return self.class_title
+
+    def title(self):
+        return self.class_title.split(":")[0]
+
+    def has_link(self):
+        return len(self.class_title.split(":")) > 1
+
+    def link(self):
+        if self.has_link():
+            return self.class_title.split(":")[1]
+        else:
+            return self.class_title
+
+class ContentPage(models.Model):
+    title = models.CharField(max_length=256)
+    body = models.TextField()
+
+    def __unicode__(self):
+        return self.title
+
+    def markdown(self):
+        return markdown.markdown(self.body)

@@ -15,7 +15,11 @@
         <tbody>
         {% for c in classes %}
         <tr>
-            <td>{{ c.class_title }}</td>
+            {% if c.has_link %}
+            <td><a href="/blog/contentpage/{{ c.link }}">{{ c.title }}</a></td>
+            {% else %}
+            <td>{{ c.title }}</td>
+            {% endif %}
             <td>{{ c.target_participants }}</td>
             <td>{{ c.time_desc }}</td>
             <td>{{ c.location }}</td>
